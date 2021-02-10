@@ -1,0 +1,12 @@
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.csprojAssemblyReference.cache
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.AssemblyInfoInputs.cache
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.AssemblyInfo.cs
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.csproj.CoreCompileInputs.cache
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.deps.json
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.runtimeconfig.json
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.runtimeconfig.dev.json
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.dll
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.pdb
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.dll
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.pdb
+C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.genruntimeconfig.cache
