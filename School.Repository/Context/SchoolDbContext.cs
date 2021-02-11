@@ -13,12 +13,7 @@ namespace School.Repository.Context
         public DbSet<Course> Course { get; set; }
         public DbSet<Student> Student { get; set; }
 
-        //IConfiguration Configuration;
-
-        //public SchoolDbContext(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //}
+       
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

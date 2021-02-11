@@ -13,6 +13,7 @@ namespace School.Repository.Repository
         {
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Student> RollCall(int id)
         {
             return _dbContext.Course
