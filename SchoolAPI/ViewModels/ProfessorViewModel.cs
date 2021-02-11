@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace School.Repository.Models
 {
-    public class ProfessorDto
+    public class ProfessorViewModel
     {
         
         public int Id { get; set; }
         public string ProfessorName { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public int Age { get; set; }
         public DateTime IngressYear { get; set; }
         public ICollection<CourseViewModel> Courses { get; set; }
     }

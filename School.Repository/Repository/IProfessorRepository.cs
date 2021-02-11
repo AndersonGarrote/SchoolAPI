@@ -6,7 +6,7 @@ using System.Text;
 
 namespace School.Repository.Repository
 {
-    public interface IProfessorRepository
+    public interface IProfessorRepository : IRepository<Professor>
     {
         IEnumerable<Course> GetAllCourses(int id);
     }
