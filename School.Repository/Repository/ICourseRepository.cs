@@ -5,13 +5,13 @@ using System.Text;
 
 namespace School.Repository.Repository
 {
-    public interface ICourseRepository
+    public interface ICourseRepository : IRepository<Course>
     {
         /// <summary>
-        /// Lista os alunos do curso
+        /// Lists Students from Course
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Course Identifier</param>
+        /// <returns>Enumerable of Students from Course</returns>
         IEnumerable<Student> RollCall(int id);
     }
 }

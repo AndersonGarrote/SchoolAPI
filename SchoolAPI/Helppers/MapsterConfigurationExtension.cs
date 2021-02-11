@@ -10,11 +10,11 @@ namespace School.API.Helppers
 {
     public static class MapsterConfigurationExtension
     {
-        public static IApplicationBuilder UseMapsterConfiguration( this IApplicationBuilder app)
+        public static IApplicationBuilder UseMapsterConfiguration(this IApplicationBuilder app)
         {
             // Configurações
             TypeAdapterConfig<Course, CourseViewModel>.NewConfig()
-                        .Map(dest => dest.Schedule, src => src.Schedule.Hour.ToString());
+                        .Map(dest => dest.Schedule, src => $"{src.Schedule.TimeOfDay.Hours}:{src.Schedule.TimeOfDay.Minutes}");
 
             return app;
         }

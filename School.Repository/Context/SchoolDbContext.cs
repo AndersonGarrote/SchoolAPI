@@ -13,7 +13,7 @@ namespace School.Repository.Context
         public DbSet<Course> Course { get; set; }
         public DbSet<Student> Student { get; set; }
 
-       
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -69,37 +69,6 @@ namespace School.Repository.Context
                    Id = 1,
                    Name = "Calculo 3",
                    Schedule = DateTime.Now,
-                   //Room = "A-20",
-                   //Students = new List<Student> {
-                   //    new Student()
-                   //    {
-                   //         Id = 1,
-                   //         DateOfBirth = DateTime.Today,
-                   //         StudentName = "Mario Laiala",
-                   //         IngressYear = DateTime.Today,
-                   //    },
-                   //    new Student()
-                   //    {
-                   //         Id = 2,
-                   //         DateOfBirth = DateTime.Today,
-                   //         StudentName = "Cirilo",
-                   //         IngressYear = DateTime.Today,
-                   //    },
-                   //    new Student()
-                   //    {
-                   //         Id = 3,
-                   //         DateOfBirth = DateTime.Today,
-                   //         StudentName = "Maria Joaquina",
-                   //         IngressYear = DateTime.Today,
-                   //     }
-                   //},
-                   //Professor = new Professor()
-                   //{
-                   //    Id = 2,
-                   //    ProfessorName = "Matilde",
-                   //    IngressYear = DateTime.Now,
-                   //    DateOfBirth = DateTime.Now
-                   //},
                    ProfessorId = 2
 
                });

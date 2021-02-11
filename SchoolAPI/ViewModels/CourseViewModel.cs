@@ -8,14 +8,14 @@ namespace School.Repository.Models
 {
     public class CourseViewModel
     {
-        [JsonIgnore]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Room { get; set; }
         public string Schedule { get; set; }
-        public ICollection<StudentDto> Students { get; set; }
         [JsonIgnore]
+        public ICollection<StudentDto> Students { get; set; }
         public int ProfessorId { get; set; }
+        [JsonIgnore]
         public ProfessorDto Professor { get; set; }
     }
 }
