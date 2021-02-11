@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
+using School.Repository.Models;
+using School.Repository.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,28 +11,76 @@ using System.Threading.Tasks;
 
 namespace School.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Students")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        // GET: api/<StudentsController>
+
+        private IUnitOfWork _dbAccessUnitOfWork;
+
+        public StudentsController(IUnitOfWork dbAccessUnitOfWork)
+        {
+            _dbAccessUnitOfWork = dbAccessUnitOfWork;
+        }
+        
+        
+        
+        /// <summary>
+        /// Returns All Students
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var allStudents = _dbAccessUnitOfWork.Students.GetAll();
+            if(allStudents == null)
+            {
+                return NotFound();
+            }
+            return Ok(allStudents.Adapt<IEnumerable<StudentViewModel>>()); 
+
         }
 
-        // GET api/<StudentsController>/5
+        /// <summary>
+        /// Returns a Single Student by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var singleStudent = _dbAccessUnitOfWork.Students.Get(id);
+            if(singleStudent == null)
+            {
+                return NotFound();
+            }
+            return Ok(singleStudent.Adapt<StudentViewModel>());
         }
 
-        // POST api/<StudentsController>
+        /// <summary>
+        /// Insert a Student into Database
+        /// </summary>
+        /// <param name="value"></param>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Student studentFromClient) //aqui será StudentToViewModel
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            Student insertedStudent = studentFromClient.Adapt<Student>();
+
+            _dbAccessUnitOfWork.Students.Add(insertedStudent);
+            _dbAccessUnitOfWork.Save();                                             // Possível troca por SaveAsync ?
+
+            
+
+            //return Created();
+
+            return Ok(); //placeholder
+
+
         }
 
         // PUT api/<StudentsController>/5
