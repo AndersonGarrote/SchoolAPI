@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace School.Repository.Models
 {
-    public class CourseDto
+    public class CourseViewModel
     {
         [JsonIgnore]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Room { get; set; }
-        public DateTime Schedule { get; set; }
+        public string Schedule { get; set; }
         public ICollection<StudentDto> Students { get; set; }
         [JsonIgnore]
         public int ProfessorId { get; set; }

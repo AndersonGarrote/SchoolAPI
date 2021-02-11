@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using School.Repository.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,14 @@ namespace School.API.Controllers
     [ApiController]
     public class CoursesController : ControllerBase
     {
+        IUnitOfWork DbAccessUnit;
+
+        public CoursesController(IUnitOfWork dbAccessUnit)
+        {
+            DbAccessUnit = dbAccessUnit;
+        }
+
+
         // GET: api/<CoursesController>
         [HttpGet]
         public IEnumerable<string> Get()

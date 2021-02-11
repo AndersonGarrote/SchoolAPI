@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using School.API.Helppers;
 using School.Repository.Context;
 using School.Repository.Repository;
 using System;
@@ -47,6 +48,8 @@ namespace SchoolAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SchoolAPI v1"));
             }
+
+            app.UseMapsterConfiguration();
 
             app.UseHttpsRedirection();
 
