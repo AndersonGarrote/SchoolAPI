@@ -15,11 +15,6 @@ namespace School.Repository.Models
         [JsonIgnore]
         public ICollection<StudentDto> Students { get; set; }
         public int ProfessorId { get; set; }
-<<<<<<< HEAD
-        [JsonIgnore]
-        public ProfessorDto Professor { get; set; }
-=======
         public ProfessorViewModel Professor { get; set; }
->>>>>>> 56cdfaa47ceb1e9a7000bcc58296dd295393e815
     }
 }
