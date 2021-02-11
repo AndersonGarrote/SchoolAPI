@@ -5721,19 +5721,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\anderson.garrote\\.nuget\\packages\\": {}
+    "C:\\Users\\lucas.silva\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\anderson.garrote\\source\\repos\\SchoolAPI\\School.ConsoleApp\\School.ConsoleApp.csproj",
+      "projectUniqueName": "C:\\Users\\lucas.silva\\Desktop\\SchoolAPI\\School.ConsoleApp\\School.ConsoleApp.csproj",
       "projectName": "School.ConsoleApp",
-      "projectPath": "C:\\Users\\anderson.garrote\\source\\repos\\SchoolAPI\\School.ConsoleApp\\School.ConsoleApp.csproj",
-      "packagesPath": "C:\\Users\\anderson.garrote\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\anderson.garrote\\source\\repos\\SchoolAPI\\School.ConsoleApp\\obj\\",
+      "projectPath": "C:\\Users\\lucas.silva\\Desktop\\SchoolAPI\\School.ConsoleApp\\School.ConsoleApp.csproj",
+      "packagesPath": "C:\\Users\\lucas.silva\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lucas.silva\\Desktop\\SchoolAPI\\School.ConsoleApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\anderson.garrote\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lucas.silva\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5747,8 +5747,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\anderson.garrote\\source\\repos\\SchoolAPI\\School.Repository\\School.Repository.csproj": {
-              "projectPath": "C:\\Users\\anderson.garrote\\source\\repos\\SchoolAPI\\School.Repository\\School.Repository.csproj"
+            "C:\\Users\\lucas.silva\\Desktop\\SchoolAPI\\School.Repository\\School.Repository.csproj": {
+              "projectPath": "C:\\Users\\lucas.silva\\Desktop\\SchoolAPI\\School.Repository\\School.Repository.csproj"
             }
           }
         }

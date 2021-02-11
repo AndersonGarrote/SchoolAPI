@@ -74,7 +74,7 @@ namespace School.API.Controllers
             _dbAccessUnitOfWork.Students.Add(insertedStudent);
             _dbAccessUnitOfWork.Save();                                             // Possível troca por SaveAsync ?
 
-            //_dbAccessUnitOfWork.Students.Find(s => (s.));
+            
 
             //return Created();
 
