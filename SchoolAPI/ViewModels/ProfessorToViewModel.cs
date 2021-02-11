@@ -7,13 +7,15 @@ namespace School.API.ViewModels
 {
     public class ProfessorToViewModel
     {
+        //public int Id { get; set; }
+
         public string ProfessorName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
         public DateTime IngressYear { get; set; }
 
-        public ICollection<CourseToViewModel> Courses { get; set; }
+        //public ICollection<CourseToViewModel> Courses { get; set; }
 
     }
 }

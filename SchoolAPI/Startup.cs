@@ -35,7 +35,9 @@ namespace SchoolAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SchoolAPI", Version = "v1" });
             });
+
             services.AddDbContext<SchoolDbContext>();
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 

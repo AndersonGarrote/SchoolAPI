@@ -20,6 +20,7 @@ namespace School.API.Helppers
 
 
             TypeAdapterConfig<Professor, ProfessorViewModel>.NewConfig()
+                .Map(dest => dest.IngressYear, src=> src.IngressYear.Year)
                 .Map(dest => dest.Age, src => DateTime.Now.Year - src.DateOfBirth.Year);
             return app;
         }

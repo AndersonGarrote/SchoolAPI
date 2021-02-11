@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net;
 using Mapster;
 using School.Repository.Repository;
 using MapsterMapper;
+using School.API.ViewModels;
 using School.Repository.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -37,7 +39,7 @@ namespace School.API.Controllers
         /// </summary>
         /// <param name="id">professor database identifier</param>
         /// <returns>one professor instance if it exists</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetProfessor")]
         public IActionResult GetById(int id)
         {
             var prof = _dbAcessUnitOfWork.Professors.Get(id);
@@ -58,23 +60,66 @@ namespace School.API.Controllers
             return Ok(courses.Adapt<IEnumerable<CourseViewModel>>());
         }
 
-        // POST api/<ProfessorsController>
+       /// <summary>
+       /// Post a professor
+       /// </summary>
+       /// <param name="professor">Professor instance</param>
+       /// <returns></returns>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<ProfessorViewModel> Post(ProfessorToViewModel professor)
         {
+            var professorEntity = professor.Adapt<Professor>();
+            _dbAcessUnitOfWork.Professors.Add(professorEntity);
+            _dbAcessUnitOfWork.Save();
 
+            var profToReturn = professorEntity.Adapt<ProfessorViewModel>();
+            return CreatedAtRoute("GetProfessor", 
+                new {id = professorEntity.Id}, 
+                profToReturn);
         }
 
-        // PUT api/<ProfessorsController>/5
+        /// <summary>
+        /// Update or insert a professor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="professor"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, ProfessorToViewModel professor)
         {
+            var profFromDb = _dbAcessUnitOfWork.Professors.Get(id);
+
+            if (profFromDb == null)
+            {
+                var profToAdd = professor.Adapt<Professor>();
+                _dbAcessUnitOfWork.Professors.Add(profToAdd);
+                _dbAcessUnitOfWork.Save();
+                var profToReturn = profToAdd.Adapt<ProfessorViewModel>();
+                return CreatedAtRoute("GetProfessor",
+                    new { id = profToAdd.Id },
+                    profToReturn);
+            }
+
+            profFromDb.DateOfBirth = professor.DateOfBirth;
+            profFromDb.IngressYear = professor.IngressYear;
+            profFromDb.ProfessorName = professor.ProfessorName;
+            _dbAcessUnitOfWork.Save();
+            return NoContent();
         }
 
-        // DELETE api/<ProfessorsController>/5
+        /// <summary>
+        /// Delete a professor
+        /// </summary>
+        /// <param name="id">database identifier</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            var prof = _dbAcessUnitOfWork.Professors.Get(id);
+            if (prof == null) return NotFound();
+            _dbAcessUnitOfWork.Professors.Remove(prof);
+            _dbAcessUnitOfWork.Save();
+            return NoContent();
         }
     }
 }
