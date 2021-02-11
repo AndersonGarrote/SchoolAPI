@@ -41,7 +41,9 @@ namespace SchoolAPI
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
             services.AddDbContext<SchoolDbContext>();
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
