@@ -13,9 +13,9 @@ namespace School.ConsoleApp
         {
             using (var unitOfWork = new UnitOfWork(new SchoolDbContext()))
             {
-                Student valeria = (unitOfWork.Students.Find(s => s.StudentName == "Valéria") as List<Student>)[0];
 
-                Console.WriteLine(JsonSerializer.Serialize(valeria, new JsonSerializerOptions { WriteIndented = true }));
+                var profs = unitOfWork.Professors.GetAllCourses(2);
+                Console.WriteLine(JsonSerializer.Serialize(profs, new JsonSerializerOptions { WriteIndented = true }));
             }
         }
     }

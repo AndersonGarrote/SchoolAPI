@@ -10,3 +10,15 @@ C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\bin\Debug\net
 C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.dll
 C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.pdb
 C:\Users\anderson.garrote\source\repos\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.genruntimeconfig.cache
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.deps.json
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.runtimeconfig.json
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.runtimeconfig.dev.json
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.dll
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\bin\Debug\netcoreapp3.1\School.Repository.pdb
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.csprojAssemblyReference.cache
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.AssemblyInfoInputs.cache
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.AssemblyInfo.cs
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.csproj.CoreCompileInputs.cache
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.dll
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.pdb
+C:\Users\matheus.novaes\Documents\SchoolAPI\School.Repository\obj\Debug\netcoreapp3.1\School.Repository.genruntimeconfig.cache

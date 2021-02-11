@@ -16,6 +16,6 @@ namespace School.Repository.Models
         public ICollection<StudentDto> Students { get; set; }
         [JsonIgnore]
         public int ProfessorId { get; set; }
-        public ProfessorDto Professor { get; set; }
+        public ProfessorViewModel Professor { get; set; }
     }
 }
