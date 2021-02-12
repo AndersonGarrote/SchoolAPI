@@ -18,10 +18,12 @@ namespace School.API.Controllers
     {
 
         private IUnitOfWork _dbAccessUnitOfWork;
+        private IMapper _mapper;
 
-        public StudentsController(IUnitOfWork dbAccessUnitOfWork)
+        public StudentsController(IUnitOfWork dbAccessUnitOfWork, IMapper mapper)
         {
             _dbAccessUnitOfWork = dbAccessUnitOfWork;
+            _mapper = mapper;
         }
         
         
@@ -63,7 +65,7 @@ namespace School.API.Controllers
         /// </summary>
         /// <param name="studentFromClient"></param>
         [HttpPost]
-        public IActionResult Post([FromBody] StudentToViewModel studentFromClient) //aqui será StudentToViewModel
+        public IActionResult Post([FromBody] StudentToViewModel studentFromClient) 
         {
             ICollection<Course> courses = new List<Course>();
 
@@ -98,27 +100,59 @@ namespace School.API.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Update a single student
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] StudentToViewModel studentFromClient)
         {
+            ICollection<Course> courses = new List<Course>();
+
+            foreach (int course in studentFromClient.Courses)
+            {
+                var courseFromDb = _dbAccessUnitOfWork.Courses.Get(course);
+                if (courseFromDb == null)
+                {
+                    return NotFound($"Course {course} not found");
+                }
+                else
+                {
+                    courses.Append(courseFromDb);
+                }
+
+            }
+
+            var studentUpdateEntity = _dbAccessUnitOfWork.Students.Get(id);
+            _mapper.Map(studentFromClient, studentUpdateEntity);
+            studentUpdateEntity.Courses = courses;
+
+            _dbAccessUnitOfWork.Save();
+            
+
+            return NoContent();
         }
 
-        // DELETE api/<StudentsController>/5
+        
         /// <summary>
-        /// 
+        /// Remove a student from the database
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if(_dbAccessUnitOfWork.Students.Get(id) == null)
+            {
+                return BadRequest();
+            }
+            var removedStudent = _dbAccessUnitOfWork.Students.Get(id);
+            _dbAccessUnitOfWork.Students.Remove(removedStudent);
+            _dbAccessUnitOfWork.Save();
+            return NoContent();
         }
 
         /// <summary>
-        /// Returns a Single Student by Id
+        /// Returns the courses for a single student
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
