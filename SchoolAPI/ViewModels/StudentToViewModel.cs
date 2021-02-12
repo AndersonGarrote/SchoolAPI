@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace School.API.ViewModels
@@ -15,6 +16,8 @@ namespace School.API.ViewModels
 
         public DateTime IngressYear { get; set; }
 
-        public IEnumerable<int> Courses { get; set; }
+        public IEnumerable<int> CoursesIds { get; set; }
+
+        
     }
 }
