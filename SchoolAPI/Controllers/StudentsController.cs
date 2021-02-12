@@ -161,7 +161,7 @@ namespace School.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}/courses", Name = "GetStudentCourses")]
-        public IActionResult GetCourses(int id)
+        public ActionResult<IEnumerable<CourseViewModel>> GetCourses(int id)
         {
             var singleStudent = _dbAccessUnitOfWork.Students.Get(id);
             if (singleStudent == null)
@@ -169,7 +169,9 @@ namespace School.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_dbAccessUnitOfWork.Students.GetAllCourses(id).Adapt<IEnumerable<CourseViewModel>>());
+            var courses = _dbAccessUnitOfWork.Students.GetAllCourses(id).Adapt<IEnumerable<CourseViewModel>>();
+
+            return Ok(courses.OrderBy(c => c.Schedule));
         }
 
         [HttpGet("{id}/professors", Name = "GetStudentProfessors")]
