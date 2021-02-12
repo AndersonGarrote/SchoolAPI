@@ -9,7 +9,7 @@ namespace School.Repository.Models
     {
         public int Id { get; set; }
         public string StudentName { get; set; }
-        public int Idade { get; set; }
+        public int Age { get; set; }
         public DateTime IngressYear { get; set; }
         //public ICollection<CourseViewModel> Courses { get; set; }
 

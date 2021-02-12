@@ -20,11 +20,16 @@ namespace School.API.Helppers
             TypeAdapterConfig<CourseToViewModel, Course>.NewConfig()
                         .Map(dest => dest.Schedule, src => DateTime.ParseExact(src.Schedule, "HH:mm", CultureInfo.InvariantCulture));
 
+            TypeAdapterConfig<Student, StudentViewModel>.NewConfig()
+                .Map(dest => dest.IngressYear, src => src.IngressYear.Year)
+                .Map(dest => dest.Age, src => DateTime.Now.Year - src.DateOfBirth.Year);
+            TypeAdapterConfig<StudentToViewModel, Student>.NewConfig();
 
 
             TypeAdapterConfig<Professor, ProfessorViewModel>.NewConfig()
                 .Map(dest => dest.IngressYear, src=> src.IngressYear.Year)
                 .Map(dest => dest.Age, src => DateTime.Now.Year - src.DateOfBirth.Year);
+            TypeAdapterConfig<ProfessorToViewModel, Professor>.NewConfig();
             return app;
         }
     }
