@@ -174,11 +174,16 @@ namespace School.API.Controllers
             return Ok(courses.OrderBy(c => c.Schedule));
         }
 
+        /// <summary>
+        /// Returns the names of the professors of a single student
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}/professors", Name = "GetStudentProfessors")]
-        public IActionResult GetStudentProfessors(int id)
+        public ActionResult<List<String>> GetStudentProfessors(int id)
         {
 
-            return Ok();
+            return Ok(_dbAccessUnitOfWork.Students.GetProfessorNames(id));
         }
     }
 }

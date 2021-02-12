@@ -23,5 +23,26 @@ namespace School.Repository.Repository
                 .Courses
                 .ToList();
         }
+
+        public List<string> GetProfessorNames(int id)
+        {
+            List<string> professorNames = new List<string>();
+            var coursesForStudent = _dbContext.Student
+                                        .Where(s => s.Id == id)
+                                            .Include(s => s.Courses)
+                                        .SingleOrDefault()
+                                        .Courses;
+
+           foreach (var course in coursesForStudent)
+            {
+                string profname = _dbContext.Professor
+                                    .Where(p => p.Id == course.ProfessorId)
+                                    .SingleOrDefault()
+                                    .ProfessorName;
+                professorNames.Add(profname);
+            }
+
+            return professorNames;
+        }
     }
 }
