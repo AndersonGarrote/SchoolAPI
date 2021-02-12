@@ -14,8 +14,8 @@ namespace School.ConsoleApp
             using (var unitOfWork = new UnitOfWork(new SchoolDbContext()))
             {
 
-                var profs = unitOfWork.Professors.GetAllCourses(2);
-                Console.WriteLine(JsonSerializer.Serialize(profs, new JsonSerializerOptions { WriteIndented = true }));
+                
+                Console.WriteLine(typeof(StudentRepository));
             }
         }
     }
