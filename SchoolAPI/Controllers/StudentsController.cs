@@ -70,7 +70,7 @@ namespace School.API.Controllers
         {
             ICollection<Course> courses = new List<Course>();
 
-            foreach (int course in studentFromClient.Courses)
+            foreach (int course in studentFromClient.CoursesIds)
             {
                 var courseFromDb = _dbAccessUnitOfWork.Courses.Get(course);
                 if (courseFromDb == null)
@@ -84,16 +84,22 @@ namespace School.API.Controllers
                 
             }
 
+
             if(!ModelState.IsValid) //por validação de annotation
             {
                 return BadRequest();
             }
 
             var studentEntity = studentFromClient.Adapt<Student>();
-            studentEntity.Courses = courses;
             _dbAccessUnitOfWork.Students.Add(studentEntity);
+           
+
+            foreach (var course in courses)
+            {
+                course.Students.Add(studentEntity);
+            }
+
             _dbAccessUnitOfWork.Save();
-            
             var studentToReturn = studentEntity.Adapt<StudentViewModel>();
             return CreatedAtRoute("GetStudent",
                 new { id = studentEntity.Id },
@@ -108,25 +114,27 @@ namespace School.API.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] StudentToViewModel studentFromClient)
         {
-            ICollection<Course> courses = new List<Course>();
+            var student = _dbAccessUnitOfWork.Students.Get(id);
 
-            foreach (int course in studentFromClient.Courses)
+            foreach (int course in studentFromClient.CoursesIds)
             {
                 var courseFromDb = _dbAccessUnitOfWork.Courses.Get(course);
+
                 if (courseFromDb == null)
                 {
                     return NotFound($"Course {course} not found");
                 }
                 else
                 {
-                    courses.Append(courseFromDb);
+                    if (student.Courses == null) student.Courses = new List<Course>();
+                    if (courseFromDb.Students ==  null) courseFromDb.Students = new List<Student>();
+                    student.Courses.Add(courseFromDb);
+                    courseFromDb.Students.Add(student);
                 }
 
             }
 
-            var studentUpdateEntity = _dbAccessUnitOfWork.Students.Get(id);
-            _mapper.Map(studentFromClient, studentUpdateEntity);
-            studentUpdateEntity.Courses = courses;
+            _mapper.Map(studentFromClient, student);
 
             _dbAccessUnitOfWork.Save();
             
