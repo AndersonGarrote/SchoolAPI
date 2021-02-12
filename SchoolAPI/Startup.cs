@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using MapsterMapper;
 
 namespace SchoolAPI
 {
@@ -41,6 +42,8 @@ namespace SchoolAPI
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddScoped<IMapper, Mapper>();
 
             services.AddDbContext<SchoolDbContext>();
             
