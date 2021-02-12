@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Mapster;
 using School.Repository.Repository;
@@ -50,7 +51,7 @@ namespace School.API.Controllers
         }
 
         /// <summary>
-        /// Returns the courses a given professor teaches
+        /// Retrieves the courses a given professor teaches
         /// </summary>
         /// <param name="id">professor database identifier</param>
         /// <returns>list of courses</returns>
@@ -60,6 +61,19 @@ namespace School.API.Controllers
             var courses= _dbAcessUnitOfWork.Professors.GetAllCourses(id);
             if (courses == null) return NotFound();
             return Ok(courses.Adapt<IEnumerable<CourseViewModel>>());
+        }
+
+        /// <summary>
+        /// Counts the number of courses a professor teaches
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/courses/count")]
+        public ActionResult GetCoursesCount(int id)
+        {
+            var courses = _dbAcessUnitOfWork.Professors.GetAllCourses(id);
+            if (courses == null) return NotFound();
+            return Ok(courses.Count());
         }
 
        /// <summary>
