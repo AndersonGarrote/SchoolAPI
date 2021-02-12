@@ -16,7 +16,8 @@ namespace School.API.Helppers
             TypeAdapterConfig<Course, CourseViewModel>.NewConfig()
                         .Map(dest => dest.Schedule, src => $"{src.Schedule.TimeOfDay.Hours}:{src.Schedule.TimeOfDay.Minutes}");
 
-
+            TypeAdapterConfig<Student, StudentViewModel>.NewConfig()
+                        .Map(dest => dest.Idade, src => (DateTime.Now.Year - src.DateOfBirth.Year));
 
 
             TypeAdapterConfig<Professor, ProfessorViewModel>.NewConfig()
