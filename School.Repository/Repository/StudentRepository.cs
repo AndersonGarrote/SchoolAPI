@@ -23,13 +23,5 @@ namespace School.Repository.Repository
                 .Courses
                 .ToList();
         }
-
-        public Student GetAllCourses2(int id)
-        {
-            return _dbContext.Student
-                .Where(s => s.Id == id)
-                    .Include(s => s.Courses)
-                .SingleOrDefault();
-        }
     }
 }

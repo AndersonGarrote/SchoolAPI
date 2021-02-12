@@ -24,7 +24,6 @@ namespace School.API.Controllers
         }
 
 
-        // GET: api/<CoursesController>
         /// <summary>
         /// Retrieves all the Courses from the database
         /// </summary>
@@ -35,7 +34,6 @@ namespace School.API.Controllers
             return DbAccessUnit.Courses.GetAll().Adapt<IEnumerable<CourseViewModel>>();
         }
 
-        // GET api/<CoursesController>/5
         /// <summary>
         /// Retrieves the Course with the given identifier from the database
         /// </summary>
@@ -52,7 +50,11 @@ namespace School.API.Controllers
             return DbAccessUnit.Courses.Get(id).Adapt<CourseViewModel>();
         }
 
-        // POST api/<CoursesController>
+        /// <summary>
+        /// Creates the given Course in the database
+        /// </summary>
+        /// <param name="course">Course to be created</param>
+        /// <returns>Created course</returns>
         [HttpPost]
         public ActionResult<CourseViewModel> Post(CourseToViewModel course)
         {
@@ -68,15 +70,20 @@ namespace School.API.Controllers
                 courseToReturn);
         }
 
-        // PUT api/<CoursesController>/5
+        /// <summary>
+        /// Updates the given Course in the database
+        /// </summary>
+        /// <param name="id">Course identifier</param>
+        /// <param name="course">Course to be updated</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] CourseToViewModel course)
         {
+            if (!DbAccessUnit.Professors.Exists(course.ProfessorId)) return NotFound("Invalid Professor ID");
+            
             var courseFromDb = DbAccessUnit.Courses.Get(id);
-
             if (courseFromDb == null)
             {
-                if (!DbAccessUnit.Professors.Exists(course.ProfessorId)) return NotFound("Invalid Professor ID");
                 var courseToAdd = course.Adapt<Course>();
                 DbAccessUnit.Courses.Add(courseToAdd);
                 DbAccessUnit.Save();
@@ -86,16 +93,12 @@ namespace School.API.Controllers
                     courseToReturn);
             }
 
-            courseFromDb.Name = course.Name;
-            courseFromDb.ProfessorId = course.ProfessorId;
-
-            //courseFromDb.IngressYear = course.IngressYear;
-            //courseFromDb.ProfessorName = course.ProfessorName;
+            course.Adapt(courseFromDb);
             DbAccessUnit.Save();
+        
             return NoContent();
         }
 
-        // DELETE api/<CoursesController>/5
         /// <summary>
         /// Deletes the Course with the given identifier from the database
         /// </summary>
@@ -114,6 +117,39 @@ namespace School.API.Controllers
             DbAccessUnit.Save();
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Lists the Students from the Course with the given identifier
+        /// </summary>
+        /// <param name="id">Course identifier</param>
+        /// <returns>List of Students</returns>
+        [HttpGet("{id}/Students", Name = "GetCourseStudents")]
+        public ActionResult<IEnumerable<StudentViewModel>> GetCourseStudents(int id)
+        {
+            if (!DbAccessUnit.Courses.Exists(id))
+            {
+                return NotFound();
+            }
+
+            return Ok(DbAccessUnit.Courses.RollCall(id).Adapt<IEnumerable<StudentViewModel>>());
+        }
+
+        /// <summary>
+        /// Retrieves the Professor from the Course with the given identifier
+        /// </summary>
+        /// <param name="id">Course identifier</param>
+        /// <returns>Professor from the Course</returns>
+        [HttpGet("{id}/Professor", Name = "GetCourseProfessor")]
+        public ActionResult<ProfessorViewModel> GetCourseProfessor(int id)
+        {
+            if (!DbAccessUnit.Courses.Exists(id)) return NotFound();
+
+            var courseFromDb = DbAccessUnit.Courses.Get(id);
+
+            if (!DbAccessUnit.Professors.Exists(courseFromDb.ProfessorId)) return NotFound();
+
+            return Ok(DbAccessUnit.Professors.Get(courseFromDb.ProfessorId).Adapt<ProfessorViewModel>());
         }
     }
 }

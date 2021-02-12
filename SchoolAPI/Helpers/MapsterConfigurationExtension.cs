@@ -1,8 +1,10 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Builder;
+using School.API.ViewModels;
 using School.Repository.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,8 +16,9 @@ namespace School.API.Helppers
         {
             // Configurações
             TypeAdapterConfig<Course, CourseViewModel>.NewConfig()
-                        .Map(dest => dest.Schedule, src => $"{src.Schedule.TimeOfDay.Hours}:{src.Schedule.TimeOfDay.Minutes}");
-
+                        .Map(dest => dest.Schedule, src => src.Schedule.ToString("t"));
+            TypeAdapterConfig<CourseToViewModel, Course>.NewConfig()
+                        .Map(dest => dest.Schedule, src => DateTime.ParseExact(src.Schedule, "HH:mm", CultureInfo.InvariantCulture));
 
 
 
