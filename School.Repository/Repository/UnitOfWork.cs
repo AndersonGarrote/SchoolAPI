@@ -9,12 +9,15 @@ namespace School.Repository.Repository
         public IStudentRepository Students { get; set; }
         public IProfessorRepository Professors { get; set; }
 
+        private RepositoryFactory factory = new RepositoryFactory();
+
         public UnitOfWork(SchoolDbContext context)
         {
             _context = context;
-            Courses = new CourseRepository(context);
-            Students = new StudentRepository(context);
-            Professors = new ProfessorRepository(context);
+
+            Courses = factory.CreateCourseRepository(context);
+            Students = factory.CreateStudentRepository(context);
+            Professors = factory.CreateProfessorRepository(context);
         }
 
         public void Dispose()
