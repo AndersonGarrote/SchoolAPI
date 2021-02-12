@@ -8,7 +8,12 @@ using System.Threading.Tasks;
 
 namespace School.Repository.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public abstract class Repository<TContext>
+    {
+        internal TContext Context { get; set; }
+    }
+
+    public class Repository<TEntity, TContext> : Repository<TContext>, IRepository<TEntity> where TEntity : class where TContext: DbContext
     {
         protected readonly SchoolDbContext _dbContext;
 
@@ -53,6 +58,14 @@ namespace School.Repository.Repository
         {
             return _dbContext.Set<TEntity>().Find(id) != null;
         }
+    }
+
+
+    public class SchoolRepository<TEntity> : Repository<TEntity, SchoolEntities>, IRepository<TEntity> where TEntity : class
+    {
+        public SchoolRepository() { }
+        public SchoolRepository(SchoolEntities dbContext) : base(dbContext) { }
+
     }
 
 }

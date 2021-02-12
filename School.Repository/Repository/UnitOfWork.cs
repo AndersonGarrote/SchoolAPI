@@ -2,22 +2,20 @@
 
 namespace School.Repository.Repository
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : RepositoryFactory<SchoolDbContext>, IUnitOfWork
     {
         private readonly SchoolDbContext _context;
         public ICourseRepository Courses { get; set; }
         public IStudentRepository Students { get; set; }
         public IProfessorRepository Professors { get; set; }
 
-        private RepositoryFactory factory = new RepositoryFactory();
-
-        public UnitOfWork(SchoolDbContext context)
+        public UnitOfWork(SchoolDbContext context): base(context)
         {
             _context = context;
 
-            Courses = factory.CreateCourseRepository(context);
-            Students = factory.CreateStudentRepository(context);
-            Professors = factory.CreateProfessorRepository(context);
+            Courses = CreateRepository<CourseRepository>();
+            //Students = CreateRepository<StudentRepository>();
+            //Professors = CreateRepository<ProfessorRepository>();
         }
 
         public void Dispose()

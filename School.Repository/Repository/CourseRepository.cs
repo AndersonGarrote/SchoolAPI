@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace School.Repository.Repository
 {
-    public class CourseRepository : Repository<Course>, ICourseRepository
+    public class CourseRepository : SchoolRepository<Course>, ICourseRepository
     {
         public CourseRepository(SchoolDbContext dbContext)
             : base(dbContext)
