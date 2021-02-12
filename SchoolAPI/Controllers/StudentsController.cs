@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using School.API.ViewModels;
 using School.Repository.Models;
@@ -103,7 +104,7 @@ namespace School.API.Controllers
         /// Update a single student
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="value"></param>
+        /// <param name="studentFromClient"></param>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] StudentToViewModel studentFromClient)
         {
