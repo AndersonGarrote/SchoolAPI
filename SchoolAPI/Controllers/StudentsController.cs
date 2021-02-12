@@ -26,9 +26,9 @@ namespace School.API.Controllers
             _dbAccessUnitOfWork = dbAccessUnitOfWork;
             _mapper = mapper;
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// Returns All Students
         /// </summary>
@@ -37,11 +37,11 @@ namespace School.API.Controllers
         public IActionResult Get()
         {
             var allStudents = _dbAccessUnitOfWork.Students.GetAll();
-            if(allStudents == null)
+            if (allStudents == null)
             {
                 return NotFound();
             }
-            return Ok(allStudents.Adapt<IEnumerable<StudentViewModel>>()); 
+            return Ok(allStudents.Adapt<IEnumerable<StudentViewModel>>());
 
         }
 
@@ -54,7 +54,7 @@ namespace School.API.Controllers
         public IActionResult Get(int id)
         {
             var singleStudent = _dbAccessUnitOfWork.Students.Get(id);
-            if(singleStudent == null)
+            if (singleStudent == null)
             {
                 return NotFound();
             }
@@ -66,7 +66,7 @@ namespace School.API.Controllers
         /// </summary>
         /// <param name="studentFromClient"></param>
         [HttpPost]
-        public IActionResult Post([FromBody] StudentToViewModel studentFromClient) 
+        public IActionResult Post([FromBody] StudentToViewModel studentFromClient)
         {
             ICollection<Course> courses = new List<Course>();
 
@@ -81,11 +81,11 @@ namespace School.API.Controllers
                 {
                     courses.Add(courseFromDb);
                 }
-                
+
             }
 
 
-            if(!ModelState.IsValid) //por validação de annotation
+            if (!ModelState.IsValid) //por validação de annotation
             {
                 return BadRequest();
             }
@@ -98,7 +98,7 @@ namespace School.API.Controllers
             var studentToReturn = studentEntity.Adapt<StudentViewModel>();
             return CreatedAtRoute("GetStudent",
                 new { id = studentEntity.Id },
-                studentToReturn);                           
+                studentToReturn);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace School.API.Controllers
                 else
                 {
                     if (student.Courses == null) student.Courses = new List<Course>();
-                    if (courseFromDb.Students ==  null) courseFromDb.Students = new List<Student>();
+                    if (courseFromDb.Students == null) courseFromDb.Students = new List<Student>();
                     student.Courses.Add(courseFromDb);
                     courseFromDb.Students.Add(student);
                 }
@@ -132,12 +132,12 @@ namespace School.API.Controllers
             _mapper.Map(studentFromClient, student);
 
             _dbAccessUnitOfWork.Save();
-            
+
 
             return NoContent();
         }
 
-        
+
         /// <summary>
         /// Remove a student from the database
         /// </summary>
@@ -145,7 +145,7 @@ namespace School.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if(_dbAccessUnitOfWork.Students.Get(id) == null)
+            if (_dbAccessUnitOfWork.Students.Get(id) == null)
             {
                 return BadRequest();
             }
@@ -170,6 +170,13 @@ namespace School.API.Controllers
             }
 
             return Ok(_dbAccessUnitOfWork.Students.GetAllCourses(id).Adapt<IEnumerable<CourseViewModel>>());
+        }
+
+        [HttpGet("{id}/professors", Name = "GetStudentProfessors")]
+        public IActionResult GetStudentProfessors(int id)
+        {
+
+            return Ok();
         }
     }
 }
