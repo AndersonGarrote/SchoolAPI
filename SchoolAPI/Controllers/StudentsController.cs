@@ -116,5 +116,22 @@ namespace School.API.Controllers
         public void Delete(int id)
         {
         }
+
+        /// <summary>
+        /// Returns a Single Student by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/courses", Name = "GetStudentCourses")]
+        public IActionResult GetCourses(int id)
+        {
+            var singleStudent = _dbAccessUnitOfWork.Students.Get(id);
+            if (singleStudent == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_dbAccessUnitOfWork.Students.GetAllCourses(id).Adapt<IEnumerable<CourseViewModel>>());
+        }
     }
 }

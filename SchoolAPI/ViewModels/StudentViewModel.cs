@@ -11,7 +11,7 @@ namespace School.Repository.Models
         public string StudentName { get; set; }
         public int Idade { get; set; }
         public DateTime IngressYear { get; set; }
-        public ICollection<CourseViewModel> Courses { get; set; }
+        //public ICollection<CourseViewModel> Courses { get; set; }
 
     }
 }
