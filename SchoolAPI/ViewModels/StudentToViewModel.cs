@@ -15,8 +15,6 @@ namespace School.API.ViewModels
 
         public DateTime IngressYear { get; set; }
 
-        public ICollection<Course> Courses { get; set; }
-
-
+        public IEnumerable<int> Courses { get; set; }
     }
 }

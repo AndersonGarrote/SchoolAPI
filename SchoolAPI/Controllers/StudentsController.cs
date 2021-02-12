@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using School.API.ViewModels;
 using School.Repository.Models;
 using School.Repository.Repository;
 using System;
@@ -46,7 +47,7 @@ namespace School.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetStudent")]
         public IActionResult Get(int id)
         {
             var singleStudent = _dbAccessUnitOfWork.Students.Get(id);
@@ -60,39 +61,77 @@ namespace School.API.Controllers
         /// <summary>
         /// Insert a Student into Database
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="studentFromClient"></param>
         [HttpPost]
-        public IActionResult Post([FromBody] Student studentFromClient) //aqui será StudentToViewModel
+        public IActionResult Post([FromBody] StudentToViewModel studentFromClient) //aqui será StudentToViewModel
         {
-            if(!ModelState.IsValid)
+            ICollection<Course> courses = new List<Course>();
+
+            foreach (int course in studentFromClient.Courses)
+            {
+                var courseFromDb = _dbAccessUnitOfWork.Courses.Get(course);
+                if (courseFromDb == null)
+                {
+                    return NotFound($"Course {course} not found");
+                }
+                else
+                {
+                    courses.Append(courseFromDb);
+                }
+                
+            }
+
+            if(!ModelState.IsValid) //por validação de annotation
             {
                 return BadRequest();
             }
 
-            Student insertedStudent = studentFromClient.Adapt<Student>();
-
-            _dbAccessUnitOfWork.Students.Add(insertedStudent);
-            _dbAccessUnitOfWork.Save();                                             // Possível troca por SaveAsync ?
-
+            var studentEntity = studentFromClient.Adapt<Student>();
+            studentEntity.Courses = courses;
+            _dbAccessUnitOfWork.Students.Add(studentEntity);
+            _dbAccessUnitOfWork.Save();
             
-
-            //return Created();
-
-            return Ok(); //placeholder
-
-
+            var studentToReturn = studentEntity.Adapt<StudentViewModel>();
+            return CreatedAtRoute("GetStudent",
+                new { id = studentEntity.Id },
+                studentToReturn);                           
         }
 
-        // PUT api/<StudentsController>/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/<StudentsController>/5
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        /// <summary>
+        /// Returns a Single Student by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/courses", Name = "GetStudentCourses")]
+        public IActionResult GetCourses(int id)
+        {
+            var singleStudent = _dbAccessUnitOfWork.Students.Get(id);
+            if (singleStudent == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_dbAccessUnitOfWork.Students.GetAllCourses(id).Adapt<IEnumerable<CourseViewModel>>());
         }
     }
 }
