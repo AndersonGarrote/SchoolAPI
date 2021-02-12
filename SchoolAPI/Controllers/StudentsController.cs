@@ -79,7 +79,7 @@ namespace School.API.Controllers
                 }
                 else
                 {
-                    courses.Append(courseFromDb);
+                    courses.Add(courseFromDb);
                 }
                 
             }
@@ -91,15 +91,10 @@ namespace School.API.Controllers
             }
 
             var studentEntity = studentFromClient.Adapt<Student>();
+            studentEntity.Courses = courses;
             _dbAccessUnitOfWork.Students.Add(studentEntity);
-           
-
-            foreach (var course in courses)
-            {
-                course.Students.Add(studentEntity);
-            }
-
             _dbAccessUnitOfWork.Save();
+
             var studentToReturn = studentEntity.Adapt<StudentViewModel>();
             return CreatedAtRoute("GetStudent",
                 new { id = studentEntity.Id },
