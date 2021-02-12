@@ -21,7 +21,27 @@ namespace School.Repository.Repository
                    .Include(c => c.Students)
                .SingleOrDefault()
                .Students
+               .OrderBy(s => s.StudentName)
                .ToList();
+        }
+
+        /// <inheritdoc/>
+        public new Course Get(int id)
+        {
+            return _dbContext
+                .Set<Course>()
+                .Include(c => c.Professor)
+                .Where(c => c.Id == id)
+                .SingleOrDefault();
+        }
+
+        /// <inheritdoc/>
+        public new IEnumerable<Course> GetAll()
+        {
+            return _dbContext
+                .Set<Course>()
+                .Include(c => c.Professor)
+                .ToList();
         }
 
     }

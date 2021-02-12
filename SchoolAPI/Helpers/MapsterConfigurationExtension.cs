@@ -16,7 +16,8 @@ namespace School.API.Helppers
         {
             // Configurações
             TypeAdapterConfig<Course, CourseViewModel>.NewConfig()
-                        .Map(dest => dest.Schedule, src => src.Schedule.ToString("t"));
+                        .Map(dest => dest.Schedule, src => src.Schedule.ToString("t"))
+                        .Map(dest => dest.ProfessorName, src => src.Professor.ProfessorName);
             TypeAdapterConfig<CourseToViewModel, Course>.NewConfig()
                         .Map(dest => dest.Schedule, src => DateTime.ParseExact(src.Schedule, "HH:mm", CultureInfo.InvariantCulture));
 

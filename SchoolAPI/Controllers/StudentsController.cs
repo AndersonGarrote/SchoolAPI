@@ -182,6 +182,10 @@ namespace School.API.Controllers
         [HttpGet("{id}/professors", Name = "GetStudentProfessors")]
         public ActionResult<List<String>> GetStudentProfessors(int id)
         {
+            if (!_dbAccessUnitOfWork.Students.Exists(id))
+            {
+                return NotFound();
+            }
 
             return Ok(_dbAccessUnitOfWork.Students.GetProfessorNames(id));
         }
