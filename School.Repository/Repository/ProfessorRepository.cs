@@ -14,7 +14,11 @@ namespace School.Repository.Repository
         }
         public IEnumerable<Course> GetAllCourses(int id)
         {
-            return _dbContext.Course.Where( c => c.ProfessorId == id).ToList();
+            return _dbContext
+                .Course
+                .Where( c => c.ProfessorId == id)
+                    .Include(c => c.Professor)
+                .ToList();
         }
     }
 }

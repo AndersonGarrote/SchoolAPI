@@ -19,6 +19,7 @@ namespace School.Repository.Repository
             return _dbContext.Student
                 .Where(s => s.Id == id)
                     .Include(s => s.Courses)
+                        .ThenInclude(c => c.Professor)
                 .SingleOrDefault()
                 .Courses
                 .ToList();

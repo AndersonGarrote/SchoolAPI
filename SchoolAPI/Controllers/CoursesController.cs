@@ -120,7 +120,7 @@ namespace School.API.Controllers
         }
 
         /// <summary>
-        /// Lists the Students from the Course with the given identifier
+        /// Lists the Students from the Course with the given identifier, ordered by name
         /// </summary>
         /// <param name="id">Course identifier</param>
         /// <returns>List of Students</returns>

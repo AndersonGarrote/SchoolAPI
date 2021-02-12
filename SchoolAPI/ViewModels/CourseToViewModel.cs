@@ -13,6 +13,7 @@ namespace School.API.ViewModels
         public string Name { get; set; }
         public string Room { get; set; }
         public string Schedule { get; set; }
+        [Required]
         public int ProfessorId { get; set; }
 
     }
