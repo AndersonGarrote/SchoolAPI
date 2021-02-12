@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Builder;
+using School.API.ViewModels;
 using School.Repository.Models;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,17 @@ namespace School.API.Helppers
                         .Map(dest => dest.Schedule, src => $"{src.Schedule.TimeOfDay.Hours}:{src.Schedule.TimeOfDay.Minutes}");
 
             TypeAdapterConfig<Student, StudentViewModel>.NewConfig()
-                        .Map(dest => dest.Idade, src => (DateTime.Now.Year - src.DateOfBirth.Year));
+                .Map(dest => dest.IngressYear, src => src.IngressYear.Year)
+                .Map(dest => dest.Age, src => DateTime.Now.Year - src.DateOfBirth.Year);
 
 
             TypeAdapterConfig<Professor, ProfessorViewModel>.NewConfig()
                 .Map(dest => dest.IngressYear, src=> src.IngressYear.Year)
                 .Map(dest => dest.Age, src => DateTime.Now.Year - src.DateOfBirth.Year);
+
+            TypeAdapterConfig<ProfessorToViewModel, Professor>.NewConfig();
+            TypeAdapterConfig<CourseToViewModel, Course>.NewConfig();
+            TypeAdapterConfig<StudentToViewModel, Student>.NewConfig();
             return app;
         }
     }

@@ -16,10 +16,12 @@ namespace School.API.Controllers
     public class ProfessorsController : ControllerBase
     {
         private IUnitOfWork _dbAcessUnitOfWork;
+        private IMapper _mapper;
 
-        public ProfessorsController(IUnitOfWork dbAcessUnitOfWork)
+        public ProfessorsController(IUnitOfWork dbAcessUnitOfWork, IMapper mapper)
         {
             _dbAcessUnitOfWork = dbAcessUnitOfWork;
+            _mapper = mapper;
         }
 
 
@@ -100,9 +102,11 @@ namespace School.API.Controllers
                     profToReturn);
             }
 
-            profFromDb.DateOfBirth = professor.DateOfBirth;
-            profFromDb.IngressYear = professor.IngressYear;
-            profFromDb.ProfessorName = professor.ProfessorName;
+            _mapper.Map(professor, profFromDb);
+
+            //profFromDb.DateOfBirth = professor.DateOfBirth;
+            //profFromDb.IngressYear = professor.IngressYear;
+            //profFromDb.ProfessorName = professor.ProfessorName;
             _dbAcessUnitOfWork.Save();
             return NoContent();
         }
