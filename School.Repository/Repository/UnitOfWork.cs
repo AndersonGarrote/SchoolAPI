@@ -16,8 +16,8 @@ namespace School.Repository.Repository
             _context = context;
 
             Courses = CreateRepository<CourseRepository>();
-            //Students = CreateRepository<StudentRepository>();
-            //Professors = CreateRepository<ProfessorRepository>();
+            Students = CreateRepository<StudentRepository>();
+            Professors = CreateRepository<ProfessorRepository>();
         }
 
         public void Dispose()

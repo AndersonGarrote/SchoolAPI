@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using School.Repository.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace School.Repository.Context
 {
@@ -17,6 +14,7 @@ namespace School.Repository.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // TODO: Use Configuration.GetConnectionString instead this.
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SchoolDBAgoraVai;Trusted_Connection=True;");
             base.OnConfiguring(optionsBuilder);
 

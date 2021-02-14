@@ -1,36 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using School.Repository.Context;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace School.Repository.Repository
 {
     public class RepositoryFactory<T> where T : DbContext
     {
-        private T _context;
-        public RepositoryFactory(T context)
-        {
-            _context = context;
-        }
-        public StudentRepository CreateStudentRepository(SchoolDbContext context)
-        {
-            return new StudentRepository(context);
-        }
+        // TODO: remove if the code runs well, otherwise we will need in case of some nullException we have to fix the constructors.
+        //private T _context;
+        //public RepositoryFactory(T context)
+        //{
+        //    _context = context;
+        //}
 
-        public CourseRepository CreateCourseRepository(SchoolDbContext context)
-        {
-            return new CourseRepository(context);
-        }
 
-        public ProfessorRepository CreateProfessorRepository(SchoolDbContext context)
-        {
-            return new ProfessorRepository(context);
-        }
-
+        /// <summary>
+        /// Factory method to create specific repository.
+        /// </summary>
+        /// <typeparam name="TRepository">The type o repository to create</typeparam>
+        /// <see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/new-constraint"/>
+        /// <returns>A brand new Repository.</returns>
         protected TRepository CreateRepository<TRepository>() where TRepository : Repository<T>, new()
-        {​​
-            return new TRepository {​​ Context = _context }​​;
-        }​​
+        {
+            return new TRepository{ };
+        }
     }
 }

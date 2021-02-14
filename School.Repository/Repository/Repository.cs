@@ -4,21 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace School.Repository.Repository
 {
-    public abstract class Repository<TContext>
+    public abstract class Repository<TContext> where TContext : DbContext
     {
-        internal TContext Context { get; set; }
+
     }
 
-    public class Repository<TEntity, TContext> : Repository<TContext>, IRepository<TEntity> where TEntity : class where TContext: DbContext
+    public abstract class Repository<TEntity, TContext> : Repository<TContext>, IRepository<TEntity> where TEntity : class where TContext: DbContext
     {
-        protected readonly SchoolDbContext _dbContext;
+        protected readonly TContext _dbContext;
 
-        /// <inheritdoc/>
-        public Repository(SchoolDbContext dbContext)
+
+        public Repository() { }
+
+        public Repository(TContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -61,11 +62,11 @@ namespace School.Repository.Repository
     }
 
 
-    public class SchoolRepository<TEntity> : Repository<TEntity, SchoolEntities>, IRepository<TEntity> where TEntity : class
+    // TODO: Move to a exclusive file.
+    public class SchoolRepository<TEntity> : Repository<TEntity, SchoolDbContext> where TEntity : class
     {
         public SchoolRepository() { }
-        public SchoolRepository(SchoolEntities dbContext) : base(dbContext) { }
-
+        public SchoolRepository(SchoolDbContext dbContext) : base(dbContext) { }
     }
 
 }
