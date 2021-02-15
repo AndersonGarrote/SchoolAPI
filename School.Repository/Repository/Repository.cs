@@ -9,21 +9,16 @@ namespace School.Repository.Repository
 {
     public abstract class Repository<TContext> where TContext : DbContext
     {
-
+        internal TContext _dbContext { get; set; }
     }
 
     public abstract class Repository<TEntity, TContext> : Repository<TContext>, IRepository<TEntity> where TEntity : class where TContext: DbContext
     {
-        protected readonly TContext _dbContext;
-
-
         public Repository() { }
-
         public Repository(TContext dbContext)
         {
             _dbContext = dbContext;
         }
-
         /// <inheritdoc/>
         public void Add(TEntity entity)
         {

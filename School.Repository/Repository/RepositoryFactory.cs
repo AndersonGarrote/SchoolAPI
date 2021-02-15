@@ -5,11 +5,11 @@ namespace School.Repository.Repository
     public class RepositoryFactory<T> where T : DbContext
     {
         // TODO: remove if the code runs well, otherwise we will need in case of some nullException we have to fix the constructors.
-        //private T _context;
-        //public RepositoryFactory(T context)
-        //{
-        //    _context = context;
-        //}
+        private T _context;
+        public RepositoryFactory(T context)
+        {
+            _context = context;
+        }
 
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace School.Repository.Repository
         /// <returns>A brand new Repository.</returns>
         protected TRepository CreateRepository<TRepository>() where TRepository : Repository<T>, new()
         {
-            return new TRepository{ };
+            return new TRepository{ _dbContext = _context };
         }
     }
 }
