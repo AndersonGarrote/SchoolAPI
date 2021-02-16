@@ -14,7 +14,7 @@ namespace NUnitSchoolRepositoryTest
     {
         private UnitOfWork unitOfWork { get; set; }
         
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             var dbSet = new FakeDbSet<Course>();

@@ -11,7 +11,7 @@ namespace School.Repository.Repository
     {
         internal TContext _dbContext { get; set; }
     }
-
+    
     public abstract class Repository<TEntity, TContext> : Repository<TContext>, IRepository<TEntity> where TEntity : class where TContext: DbContext
     {
         public Repository() { }

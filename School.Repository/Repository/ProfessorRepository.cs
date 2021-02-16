@@ -12,7 +12,6 @@ namespace School.Repository.Repository
             return _dbContext
                 .Course
                 .Where( c => c.ProfessorId == id)
-                    .Include(c => c.Professor)
                 .ToList();
         }
     }
