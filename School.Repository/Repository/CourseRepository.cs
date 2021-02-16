@@ -13,9 +13,10 @@ namespace School.Repository.Repository
             // The statement bellow can raise exception, so, it's not good enough for usage.
             // A alternative approach that does not raise exception would be:
 
-            //var result = _dbContext.Student
+            //return _dbContext.Student
             //    .Where(stu => stu.Courses.Any(c => c.Id == id))
-            //    .OrderBy(stu => stu.StudentName);
+            //    .OrderBy(stu => stu.StudentName)
+            //    .ToList();
 
             // If you start a query in table A, then include table B and only projects table B,
             // than you do not need to load the table A.

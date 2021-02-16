@@ -6,17 +6,19 @@ namespace School.Repository.Context
 {
     public class SchoolDbContext : DbContext
     {
-        public DbSet<Professor> Professor { get; set; }
-        public DbSet<Course> Course { get; set; }
-        public DbSet<Student> Student { get; set; }
+        public SchoolDbContext() { }
+        public SchoolDbContext( DbContextOptions options) : base(options) { }
 
+        public virtual DbSet<Professor> Professor { get; set; }
+        public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<Student> Student { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // TODO: Use Configuration.GetConnectionString instead this.
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SchoolDBAgoraVai;Trusted_Connection=True;");
-            base.OnConfiguring(optionsBuilder);
+            //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SchoolDBAgoraVai;Trusted_Connection=True;");
+            //base.OnConfiguring(optionsBuilder);
 
         }
 
