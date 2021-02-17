@@ -16,19 +16,21 @@ namespace NUnitSchoolRepositoryTest
         private Course testCourse;
 
         private UnitOfWork unitOfWork { get; set; }
-        public SchoolDbContext SchoolDbContext { get; set; }
+        private DbContextOptions<SchoolDbContext> options = new DbContextOptionsBuilder<SchoolDbContext>()
+            .UseInMemoryDatabase(databaseName: "SchoolDatabase")
+            .Options;
+
+
+
+        public SchoolDbContext context { get; set; }
 
         [SetUp]
         public void Setup()
         {
-            // Configurando o database in-memory
-            var options = new DbContextOptionsBuilder<SchoolDbContext>()
-                    .UseInMemoryDatabase(databaseName: "SchoolDatabase")
-                    .Options;
 
-            SchoolDbContext = new SchoolDbContext(options);
+            context = new SchoolDbContext(options);
 
-            unitOfWork = new UnitOfWork(SchoolDbContext);
+            unitOfWork = new UnitOfWork(context);
 
         }
 
@@ -238,19 +240,10 @@ namespace NUnitSchoolRepositoryTest
         [TearDown]
         public void Cleanup()
         {
-            unitOfWork.Professors.Remove(unitOfWork.Professors.Get(1));
-            unitOfWork.Courses.Remove(unitOfWork.Courses.Get(1));
-            unitOfWork.Students.Remove(unitOfWork.Students.Get(1));
-            unitOfWork.Save();
+            context.Database.EnsureDeleted();
+            context.Dispose();
+            unitOfWork.Dispose();
 
-        }
-        [OneTimeTearDown]
-        public void Cleanup()
-        {
-            unitOfWork.Professors.Remove(unitOfWork.Professors.Get(1));
-            unitOfWork.Courses.Remove(unitOfWork.Courses.Get(1));
-            unitOfWork.Students.Remove(unitOfWork.Students.Get(1));
-            unitOfWork.Save();
         }
     }
 }
