@@ -13,19 +13,26 @@ namespace NUnitSchoolRepositoryTest
     public class CoursesTests
     {
         private UnitOfWork unitOfWork { get; set; }
-        
-        [OneTimeSetUp]
+        private DbContextOptions<SchoolDbContext> options = new DbContextOptionsBuilder<SchoolDbContext>()
+            .UseInMemoryDatabase(databaseName: "SchoolDatabase")
+            .Options;
+
+
+        private SchoolDbContext context { get; set; }
+
+        [SetUp]
         public void Setup()
         {
-            // Configurando o database in-memory
-            var options = new DbContextOptionsBuilder<SchoolDbContext>()
-                    .UseInMemoryDatabase(databaseName: "SchoolDatabase")
-                    .Options;
+            //var options = new DbContextOptionsBuilder<SchoolDbContext>()
+            //        .UseInMemoryDatabase(databaseName: "SchoolDatabase")
+            //        .Options;
+            //var schoolDbContext = new SchoolDbContext(options)
 
-            var schoolDbContext = new SchoolDbContext(options);
+            context = new SchoolDbContext(options);
+            unitOfWork = new UnitOfWork(context);
 
-            unitOfWork = new UnitOfWork(schoolDbContext);
-            PopulateUnitOfWork();
+            PopulateUnitOfWork(unitOfWork);
+
 
         }
 
@@ -54,7 +61,7 @@ namespace NUnitSchoolRepositoryTest
             Assert.DoesNotThrow(() => unitOfWork.Courses.RollCall(validId));
         }
 
-        void PopulateUnitOfWork()
+        void PopulateUnitOfWork(UnitOfWork unitOfWork)
         {
             unitOfWork.Professors.Add(new Professor()
                 {
@@ -65,13 +72,21 @@ namespace NUnitSchoolRepositoryTest
                 }
             );
             unitOfWork.Students.Add(new Student()
-                {
-                    Id = 1,
-                    StudentName = "Rogerio",
-                    DateOfBirth = DateTime.Now,
-                    IngressYear = DateTime.Now,
-                }
-            );
+            {
+                Id = 1,
+                StudentName = "Rogerio",
+                DateOfBirth = DateTime.Now,
+                IngressYear = DateTime.Now,
+            });
+
+            unitOfWork.Students.Add(new Student()
+            {
+                Id = 2,
+                StudentName = "Isfairenbloden",
+                DateOfBirth = DateTime.Now,
+                IngressYear = DateTime.Now,
+            });
+
             unitOfWork.Courses.Add(new Course()
                 {
                     Id = 1,
@@ -83,15 +98,16 @@ namespace NUnitSchoolRepositoryTest
                 }
             );
             unitOfWork.Save();
-
         }
-        [OneTimeTearDown]
+
+        [TearDown]
         public void Cleanup()
         {
-            unitOfWork.Professors.Remove(unitOfWork.Professors.Get(1));
-            unitOfWork.Courses.Remove(unitOfWork.Courses.Get(1));
-            unitOfWork.Students.Remove(unitOfWork.Students.Get(1));
-            unitOfWork.Save();
+            context.Database.EnsureDeleted();
+            context.Dispose();
+            unitOfWork.Dispose();
+            unitOfWork = null;
+
         }
     }
 }

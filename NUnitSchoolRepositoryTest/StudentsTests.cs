@@ -6,28 +6,38 @@ using School.Repository.Repository;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using School.Repository.Context;
 
 namespace NUnitSchoolRepositoryTest
 {
     [TestFixture]
     class StudentsTests
     {
-        
-        
-        private UnitOfWork unitOfWork;
 
-        [OneTimeSetUp]
+      
+        private UnitOfWork unitOfWork { get; set; }
+        private DbContextOptions<SchoolDbContext> options = new DbContextOptionsBuilder<SchoolDbContext>()
+            .UseInMemoryDatabase(databaseName: "SchoolDatabase")
+            .Options;
+        
+
+        private SchoolDbContext context { get; set; }
+
+        [SetUp]
         public void Setup()
         {
-            // Configurando o database in-memory
-            var options = new DbContextOptionsBuilder<SchoolDbContext>()
-                    .UseInMemoryDatabase(databaseName: "SchoolDatabase")
-                    .Options;
+            //var options = new DbContextOptionsBuilder<SchoolDbContext>()
+            //        .UseInMemoryDatabase(databaseName: "SchoolDatabase")
+            //        .Options;
+            //var schoolDbContext = new SchoolDbContext(options)
 
-            var schoolDbContext = new SchoolDbContext(options);
+            context = new SchoolDbContext(options);
+            unitOfWork = new UnitOfWork(context);
 
-            unitOfWork = new UnitOfWork(schoolDbContext);
-            PopulateUnitOfWork();
+            PopulateUnitOfWork(unitOfWork);
+
+            
         }
         
         
@@ -39,10 +49,13 @@ namespace NUnitSchoolRepositoryTest
         {
             List<string> profsEsperados = new List<string>();
             profsEsperados.Add("Heleno");
+            
+            
             List<string> profsRetornados = unitOfWork.Students.GetProfessorNames(1);
 
 
             Assert.That(profsEsperados[0], Is.EqualTo(profsRetornados[0]));
+
         }
 
         /// <summary>
@@ -55,9 +68,22 @@ namespace NUnitSchoolRepositoryTest
         [TestCase(100000)]
         public void GetProfessorNamesVazioComIdInvalido(int id)
         {
+
+      
+            //var options = new DbContextOptionsBuilder<SchoolDbContext>()
+            //    .UseInMemoryDatabase(databaseName: "SchoolDatabase")
+            //    .Options;
+
+
+
+        
             List<string> profsRetornados = unitOfWork.Students.GetProfessorNames(id);
 
             Assert.That(profsRetornados, Is.Empty);
+
+
+
+
         }
 
 
@@ -80,10 +106,16 @@ namespace NUnitSchoolRepositoryTest
 
             var cursosEsperados = new List<Course>() { cursoEsperadoTeste};
 
+  
+            
 
+            
             var cursosRetornados = unitOfWork.Students.GetAllCourses(1) as List<Course>;
 
             Assert.That(cursosEsperados[0].Id, Is.EqualTo(cursosRetornados[0].Id));
+
+
+  
         }
 
 
@@ -97,9 +129,11 @@ namespace NUnitSchoolRepositoryTest
         [TestCase(100000)]
         public void GetAllCoursesVazioComIdInvalido(int id)
         {
-            List<Course> cursosRetornados = unitOfWork.Students.GetAllCourses(id) as List<Course>;
 
+
+            List<Course> cursosRetornados = unitOfWork.Students.GetAllCourses(id) as List<Course>;
             Assert.That(cursosRetornados, Is.Empty);
+
 
         }
 
@@ -117,11 +151,16 @@ namespace NUnitSchoolRepositoryTest
                 DateOfBirth = DateTime.Now,
                 IngressYear = DateTime.Now,
             };
+           
+
 
             Student estudanteRetornado = unitOfWork.Students.Get(1);
 
             Assert.That(estudanteRetornado.Id, Is.EqualTo(estudanteEsperado.Id));
             Assert.That(estudanteRetornado.StudentName, Is.EqualTo(estudanteEsperado.StudentName));
+
+
+            
         }
 
 
@@ -135,9 +174,14 @@ namespace NUnitSchoolRepositoryTest
         [TestCase(100000)]
         public void GetStudentIdInvalido(int id)
         {
+           
+
             Student estudanteRetornado = unitOfWork.Students.Get(id);
 
             Assert.IsNull(estudanteRetornado);
+
+
+;
         }
 
 
@@ -155,6 +199,7 @@ namespace NUnitSchoolRepositoryTest
                 IngressYear = DateTime.Now,
             };
 
+
             unitOfWork.Students.Add(studentToInsert);
             Student returnStudent = unitOfWork.Students.Get(3);
 
@@ -165,6 +210,9 @@ namespace NUnitSchoolRepositoryTest
 
             unitOfWork.Students.Remove(unitOfWork.Students.Get(3));
             unitOfWork.Save();
+
+            
+            
 
         }
         
@@ -178,6 +226,7 @@ namespace NUnitSchoolRepositoryTest
         [Test]
         public void GetAllRetornoCorreto()
         {
+
             List<Student> expectedStudents = new List<Student>()
             {
                 new Student()
@@ -195,6 +244,7 @@ namespace NUnitSchoolRepositoryTest
                     IngressYear = DateTime.Now,
                 }
             };
+           
 
             List<Student> returnStudents = unitOfWork.Students.GetAll() as List<Student>;
 
@@ -205,6 +255,9 @@ namespace NUnitSchoolRepositoryTest
             //Checking Student2
             Assert.That(returnStudents[1].Id, Is.EqualTo(expectedStudents[1].Id));
             Assert.That(returnStudents[1].StudentName, Is.EqualTo(expectedStudents[1].StudentName));
+
+        
+
         }
 
         
@@ -214,17 +267,21 @@ namespace NUnitSchoolRepositoryTest
         [Test]
         public void RemoveStudentIdValido()
         {
-            unitOfWork.Students.Remove(unitOfWork.Students.Get(2));
+
+            
+
+            unitOfWork.Students.Remove(unitOfWork.Students.Get(1));
             unitOfWork.Save();
-            Student expectedNullStudent = unitOfWork.Students.Get(2);
+            Student expectedNullStudent = unitOfWork.Students.Get(1);
 
             Assert.IsNull(expectedNullStudent);
+
         }
 
 
 
 
-        void PopulateUnitOfWork()
+        void PopulateUnitOfWork(UnitOfWork unitOfWork)
         {
             unitOfWork.Professors.Add(new Professor()
             {
@@ -263,14 +320,14 @@ namespace NUnitSchoolRepositoryTest
             unitOfWork.Save();
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         public void Cleanup()
         {
-            unitOfWork.Professors.Remove(unitOfWork.Professors.Get(1));
-            unitOfWork.Courses.Remove(unitOfWork.Courses.Get(1));
-            unitOfWork.Students.Remove(unitOfWork.Students.Get(1));
+            context.Database.EnsureDeleted();
+            context.Dispose();
+            unitOfWork.Dispose();
+            unitOfWork = null;
             
-            unitOfWork.Save();
         }
 
     }
