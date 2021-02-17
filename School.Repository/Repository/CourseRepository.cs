@@ -13,26 +13,26 @@ namespace School.Repository.Repository
             // The statement bellow can raise exception, so, it's not good enough for usage.
             // A alternative approach that does not raise exception would be:
 
-            //return _dbContext.Student
-            //    .Where(stu => stu.Courses.Any(c => c.Id == id))
-            //    .OrderBy(stu => stu.StudentName)
-            //    .ToList();
+            return _dbContext.Student
+                .Where(stu => stu.Courses.Any(c => c.Id == id))
+                .OrderBy(stu => stu.StudentName)
+                .ToList();
 
             // If you start a query in table A, then include table B and only projects table B,
             // than you do not need to load the table A.
             // In this case, we do not need to load the table Course. :D
 
-            return _dbContext.Course
-               .Where(c => c.Id == id)
-                   .Include(c => c.Students)
-               .SingleOrDefault()
-               .Students
-               .OrderBy(s => s.StudentName)
-               .ToList();
+            //return _dbContext.Course
+            //   .Where(c => c.Id == id)
+            //       .Include(c => c.Students)
+            //   .SingleOrDefault()
+            //   .Students
+            //   .OrderBy(s => s.StudentName)
+            //   .ToList();
         }
 
         /// <inheritdoc/>
-        public new Course Get(int id)
+        public Course GetIncludingProfessor(int id)
         {
             // Sometimes is not the best approach to override the get of an repository to return 
             // related data. Because usually not every call will need the related data. 
@@ -48,7 +48,7 @@ namespace School.Repository.Repository
         }
 
         /// <inheritdoc/>
-        public new IEnumerable<Course> GetAll()
+        public IEnumerable<Course> GetAllIncludingProfessor()
         {
             // The same consideration of the commentary in the above method is valid here.
             return _dbContext

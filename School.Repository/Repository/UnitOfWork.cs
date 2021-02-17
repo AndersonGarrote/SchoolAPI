@@ -7,9 +7,9 @@ namespace School.Repository.Repository
     {
         private readonly SchoolDbContext _context;
         private IDbContextTransaction _transaction;
-        public ICourseRepository Courses { get; set; }
-        public IStudentRepository Students { get; set; }
-        public IProfessorRepository Professors { get; set; }
+        public virtual ICourseRepository Courses { get; set; }
+        public virtual IStudentRepository Students { get; set; }
+        public virtual IProfessorRepository Professors { get; set; }
 
         public UnitOfWork(SchoolDbContext context): base(context)
         {
