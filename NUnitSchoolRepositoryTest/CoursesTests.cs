@@ -10,16 +10,14 @@ using System.Collections.Generic;
 
 namespace NUnitSchoolRepositoryTest
 {
-    public class Tests
+    public class CoursesTests
     {
         private UnitOfWork unitOfWork { get; set; }
         
         [OneTimeSetUp]
         public void Setup()
         {
-            var dbSet = new FakeDbSet<Course>();
-            //var schoolDbContextMock = new Mock<SchoolDbContext>();
-
+            // Configurando o database in-memory
             var options = new DbContextOptionsBuilder<SchoolDbContext>()
                     .UseInMemoryDatabase(databaseName: "SchoolDatabase")
                     .Options;
@@ -49,32 +47,40 @@ namespace NUnitSchoolRepositoryTest
             Assert.DoesNotThrow(() => unitOfWork.Courses.RollCall(validId));
         }
 
+        [Test]
+        [TestCase(1)]
+        public void RollCall_ValidId_ReturnStudentsFromCourse(int validId)
+        {
+            Assert.DoesNotThrow(() => unitOfWork.Courses.RollCall(validId));
+        }
+
         void PopulateUnitOfWork()
         {
             unitOfWork.Professors.Add(new Professor()
-            {
-                Id = 1,
-                ProfessorName = "Heleno",
-                DateOfBirth = DateTime.Now,
-                IngressYear = DateTime.Now,
-            }
+                {
+                    Id = 1,
+                    ProfessorName = "Heleno",
+                    DateOfBirth = DateTime.Now,
+                    IngressYear = DateTime.Now,
+                }
             );
             unitOfWork.Students.Add(new Student()
-            {
-                Id = 1,
-                StudentName = "Rogerio",
-                DateOfBirth = DateTime.Now,
-                IngressYear = DateTime.Now,
-            }
+                {
+                    Id = 1,
+                    StudentName = "Rogerio",
+                    DateOfBirth = DateTime.Now,
+                    IngressYear = DateTime.Now,
+                }
             );
             unitOfWork.Courses.Add(new Course()
-            {
-                Id = 1,
-                Name = "TOP",
-                Room = "COV-19",
-                ProfessorId = 1,
-                Schedule = DateTime.Now
-            }
+                {
+                    Id = 1,
+                    Name = "TOP",
+                    Room = "COV-19",
+                    Schedule = DateTime.Now,
+                    Students = new List<Student>() { unitOfWork.Students.Get(1) },
+                    Professor = unitOfWork.Professors.Get(1)
+                }
             );
             unitOfWork.Save();
         }
