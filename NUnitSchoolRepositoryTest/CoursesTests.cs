@@ -227,8 +227,8 @@ namespace NUnitSchoolRepositoryTest
             testCourse = new Course()
             {
                 Id = 1,
-                Name = "TOP",
-                Room = "COV-19",
+                Name = "Curso1",
+                Room = "1",
                 Schedule = DateTime.Now,
                 Students = studentList,
                 Professor = unitOfWork.Professors.Get(1)

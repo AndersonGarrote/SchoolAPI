@@ -11,24 +11,36 @@ using School.Repository.Repository;
 namespace NUnitSchoolRepositoryTest
 {
     [TestFixture]
-    class ProfessorTest
+    class ProfessorTests
     {
         private UnitOfWork unitOfWork { get; set; }
 
-        [OneTimeSetUp]
+        private DbContextOptions<SchoolDbContext> options = new DbContextOptionsBuilder<SchoolDbContext>()
+            .UseInMemoryDatabase(databaseName: "SchoolDatabase")
+            .Options;
+
+
+        private SchoolDbContext context { get; set; }
+
+        [SetUp]
         public void Setup()
         {
-            var dbSet = new FakeDbSet<Course>();
-            //var schoolDbContextMock = new Mock<SchoolDbContext>();
+           
+            context = new SchoolDbContext(options);
+            unitOfWork = new UnitOfWork(context);
 
-            var options = new DbContextOptionsBuilder<SchoolDbContext>()
-                .UseInMemoryDatabase(databaseName: "SchoolDatabase")
-                .Options;
-
-            var schoolDbContext = new SchoolDbContext(options);
-
-            unitOfWork = new UnitOfWork(schoolDbContext);
             PopulateUnitOfWork();
+
+
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            context.Database.EnsureDeleted();
+            context.Dispose();
+            unitOfWork.Dispose();
+            unitOfWork = null;
 
         }
 
@@ -84,7 +96,7 @@ namespace NUnitSchoolRepositoryTest
         public void GetAllCoursesProfessorReturnsCorrectCourseTest(int id)
         {
             var courses = unitOfWork.Professors.GetAllCourses(id).ToList();
-            
+
             Assert.AreEqual(1, courses[0].Id);
             Assert.AreEqual(2, courses[1].Id);
         }
@@ -95,7 +107,7 @@ namespace NUnitSchoolRepositoryTest
         [TestCase(10000)]
         public void GetAllCoursesReturnsEmptyToInvalidId(int invalidId)
         {
-            
+
             Assert.IsEmpty(unitOfWork.Professors.GetAllCourses(invalidId));
         }
 
@@ -137,38 +149,52 @@ namespace NUnitSchoolRepositoryTest
         [Test]
         public void AddProfessorActuallyAddsAProfessor()
         {
-            //arrange
-            unitOfWork.Professors.Add(new Professor()
+            var professor = new Professor()
             {
                 Id = 3,
                 DateOfBirth = DateTime.MinValue,
                 IngressYear = DateTime.Today,
                 ProfessorName = "Jorge"
-            });
+            };
+
+            //arrange
+            unitOfWork.Professors.Add(professor);
             unitOfWork.Save();
 
             //act
-            var professor = unitOfWork.Professors.Get(3);
+            var professorGet = unitOfWork.Professors.Get(3);
 
             //assert
-            Assert.IsNotNull(professor);
-            Assert.AreEqual(3, professor.Id);
+            Assert.IsNotNull(professorGet);
+            Assert.AreEqual(3, professorGet.Id);
+
+            unitOfWork.Professors.Remove(professor);
         }
 
         [Test]
         public void RemoveProfessorActuallyRemovesAProfessor()
         {
+            var professor = new Professor()
+            {
+                Id = 3,
+                DateOfBirth = DateTime.MinValue,
+                IngressYear = DateTime.Today,
+                ProfessorName = "Jorge"
+            };
+
             //arrange
-            var professor = unitOfWork.Professors.Get(3);
+            unitOfWork.Professors.Add(professor);
+            //arrange
+            var professorGet = unitOfWork.Professors.Get(3);
 
             //act
-            unitOfWork.Professors.Remove(professor);
+            unitOfWork.Professors.Remove(professorGet);
             unitOfWork.Save();
             var professorAfterRemove = unitOfWork.Professors.Get(3);
 
             //assert
             Assert.IsNull(professorAfterRemove);
-            
+
         }
 
         [Test]
@@ -181,7 +207,7 @@ namespace NUnitSchoolRepositoryTest
         [Test]
         public void FindProfessorByCourse()
         {
-            var professor = unitOfWork.Professors.Find(p => p.Courses.Any(d=> d.Id == 1)).ToList();
+            var professor = unitOfWork.Professors.Find(p => p.Courses.Any(d => d.Id == 1)).ToList();
             Assert.AreEqual(1, professor[0].Id);
         }
 
@@ -204,3 +230,4 @@ namespace NUnitSchoolRepositoryTest
 
     }
 }
+
