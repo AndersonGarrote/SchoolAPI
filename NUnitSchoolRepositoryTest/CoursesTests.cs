@@ -83,6 +83,15 @@ namespace NUnitSchoolRepositoryTest
                 }
             );
             unitOfWork.Save();
+
+        }
+        [OneTimeTearDown]
+        public void Cleanup()
+        {
+            unitOfWork.Professors.Remove(unitOfWork.Professors.Get(1));
+            unitOfWork.Courses.Remove(unitOfWork.Courses.Get(1));
+            unitOfWork.Students.Remove(unitOfWork.Students.Get(1));
+            unitOfWork.Save();
         }
     }
 }
